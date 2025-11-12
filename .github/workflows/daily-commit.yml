@@ -1,0 +1,27 @@
+name: Daily Commit Booster
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # runs daily at 6 AM UTC
+  workflow_dispatch:      # lets you run manually
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Update log
+        run: |
+          echo "Last updated: $(date -u)" > activity_log.txt
+
+      - name: Configure Git
+        run: |
+          git config user.name "Pransav290302"
+          git config user.email "patel2932002@gmail.com"
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "Auto update $(date -u)" || echo "No changes to commit"
+          git push
